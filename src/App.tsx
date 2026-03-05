@@ -622,20 +622,20 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
     {
       title: 'Advanced Programming and Web Technology',
       issuer: 'Technical Seminar',
-      date: '2024',
-      image: 'https://picsum.photos/seed/cert1/600/400' // Replace with your image path, e.g., '/certificates/advanced-programming.jpg'
+      date: '2025',
+      image: 'CERTIFICATE 1' // Replace with your image path, e.g., '/certificates/advanced-programming.jpg'
     },
     {
       title: 'AI Unplugged Decoding the Future Intelligence',
       issuer: 'Technical Seminar',
-      date: '2024',
-      image: 'https://picsum.photos/seed/cert2/600/400' // Replace with your image path
+      date: '2025',
+      image: 'CERTIFICATE 2' // Replace with your image path
     },
     {
       title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
       issuer: 'Technical Seminar',
-      date: '2024',
-      image: 'https://picsum.photos/seed/cert3/600/400' // Replace with your image path
+      date: '2025',
+      image: 'CERTIFICATE 3' // Replace with your image path
     }
   ];
 
