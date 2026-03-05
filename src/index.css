@@ -42,15 +42,15 @@
   }
 
   .dark ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    @apply bg-dark-charcoal-green/30;
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    @apply bg-aloe-white/30;
+    @apply bg-steel-blue-gray rounded-full border-2 border-transparent bg-clip-content;
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
-    @apply bg-aloe-white/50;
+    @apply bg-fog-blue-gray;
   }
   
   *, ::before, ::after {

@@ -245,8 +245,8 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
               {/* Pulse Ring Animation */}
               <motion.div
                 className={`absolute inset-0 rounded-full ${darkMode ? 'bg-aloe-white/20' : 'bg-moss-green/20'}`}
-                animate={{ scale: [1, 1.2], opacity: [0.6, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ scale: [1, 1.12, 1, 1.12, 1], opacity: [0.2, 0.5, 0.2, 0.5, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity, times: [0, 0.15, 0.3, 0.45, 1], ease: "easeInOut" }}
               />
               
               {/* Profile Image */}
@@ -660,28 +660,6 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
 };
 
 const Contact = ({ darkMode }: { darkMode: boolean }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { name, email, message } = formData;
-    
-    // Construct mailto link
-    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-    
-    window.location.href = `mailto:hplaza543@gmail.com?subject=${subject}&body=${body}`;
-  };
-
   return (
     <section id="contact" className={`py-20 ${darkMode ? 'bg-near-black-green' : 'bg-aloe-white'}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -729,15 +707,11 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
               </div>
             </div>
             
-            <form onSubmit={handleSubmit} className={`p-8 rounded-2xl shadow-lg ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/50'}`}>
+            <form className={`p-8 rounded-2xl shadow-lg ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/50'}`}>
               <div className="mb-4">
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Name</label>
                 <input 
                   type="text" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
                       ? 'bg-deep-forest-teal border border-fog-blue-gray/20 text-aloe-white focus:ring-fog-blue-gray' 
@@ -750,10 +724,6 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Email</label>
                 <input 
                   type="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
                       ? 'bg-deep-forest-teal border border-fog-blue-gray/20 text-aloe-white focus:ring-fog-blue-gray' 
@@ -765,10 +735,6 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
               <div className="mb-6">
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Message</label>
                 <textarea 
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
                   rows={4}
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
@@ -779,7 +745,7 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
                 ></textarea>
               </div>
               <button 
-                type="submit"
+                type="button"
                 className={`w-full py-3 rounded-lg font-medium transition-colors ${
                   darkMode 
                     ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
