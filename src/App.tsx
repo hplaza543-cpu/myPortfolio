@@ -241,12 +241,26 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
           transition={{ duration: 0.8 }}
         >
           <div className="flex justify-center mb-8">
-            <div className={`relative w-40 h-40 rounded-full overflow-hidden border-4 shadow-xl ${darkMode ? 'border-steel-blue-gray shadow-black/30' : 'border-moss-green/20 shadow-moss-green/20'}`}>
-              <img 
-                src="/profile.jpg" 
-                alt="John Harold Z. Plaza" 
-                className="w-full h-full object-cover"
+            <div className="relative w-56 h-56">
+              {/* Pulse Ring Animation */}
+              <motion.div
+                className={`absolute inset-0 rounded-full ${darkMode ? 'bg-aloe-white/20' : 'bg-moss-green/20'}`}
+                animate={{ scale: [1, 1.2], opacity: [0.6, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
+              
+              {/* Profile Image */}
+              <motion.div 
+                className={`relative z-10 w-full h-full rounded-full overflow-hidden border-4 shadow-xl transition-[box-shadow,border-color] duration-500 ${darkMode ? 'border-steel-blue-gray shadow-black/30' : 'border-moss-green/20 shadow-moss-green/20'}`}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+              >
+                <img 
+                  src="/profile.jpg" 
+                  alt="John Harold Z. Plaza" 
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
             </div>
           </div>
 
@@ -572,7 +586,7 @@ const Education = ({ darkMode }: { darkMode: boolean }) => {
           >
             <motion.div variants={fadeInUp} className="relative pl-8 md:pl-0">
               <div className={`absolute -left-[9px] top-0 w-4 h-4 rounded-full ${darkMode ? 'bg-fog-blue-gray' : 'bg-cypress-green'}`}></div>
-              <div className={`p-6 rounded-2xl shadow-md transition-transform hover:scale-[1.02] duration-300 ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'}`}>
+              <div className={`p-6 rounded-2xl shadow-md transition-all hover:scale-[1.02] duration-300 ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'}`}>
                 <h3 className={`text-xl font-bold ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Bachelor of Science in Computer Engineering</h3>
                 <p className={`text-lg font-medium mb-2 ${darkMode ? 'text-fog-blue-gray' : 'text-olive-green'}`}>Rizal Technological University</p>
                 <p className={`text-sm ${darkMode ? 'text-aloe-white/60' : 'text-moss-green/60'}`}>Expected Graduation: 2026</p>
@@ -584,7 +598,7 @@ const Education = ({ darkMode }: { darkMode: boolean }) => {
             
             <motion.div variants={fadeInUp} className="relative pl-8 md:pl-0">
               <div className={`absolute -left-[9px] top-0 w-4 h-4 rounded-full ${darkMode ? 'bg-fog-blue-gray' : 'bg-cypress-green'}`}></div>
-              <div className={`p-6 rounded-2xl shadow-md transition-transform hover:scale-[1.02] duration-300 ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'}`}>
+              <div className={`p-6 rounded-2xl shadow-md transition-all hover:scale-[1.02] duration-300 ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'}`}>
                 <h3 className={`text-xl font-bold ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>High School Diploma</h3>
                 <p className={`text-lg font-medium mb-2 ${darkMode ? 'text-fog-blue-gray' : 'text-olive-green'}`}>San Felipe Neri Parochial School</p>
                 <p className={`text-sm ${darkMode ? 'text-aloe-white/60' : 'text-moss-green/60'}`}>Graduated: 2022</p>
@@ -628,7 +642,7 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
                 whileHover={{ y: -5 }}
                 className={`p-6 rounded-2xl shadow-md text-center transition-all duration-300 ${darkMode ? 'bg-steel-blue-gray hover:bg-steel-blue-gray/80' : 'bg-white/60 hover:bg-white/80'}`}
               >
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${darkMode ? 'bg-fog-blue-gray/20 text-fog-blue-gray' : 'bg-moss-green/10 text-moss-green'}`}>
+                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${darkMode ? 'bg-fog-blue-gray/20 text-fog-blue-gray' : 'bg-moss-green/10 text-moss-green'}`}>
                   <ExternalLink size={24} />
                 </div>
                 <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Certification Name</h3>
@@ -646,6 +660,28 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
 };
 
 const Contact = ({ darkMode }: { darkMode: boolean }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { name, email, message } = formData;
+    
+    // Construct mailto link
+    const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    
+    window.location.href = `mailto:hplaza543@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
     <section id="contact" className={`py-20 ${darkMode ? 'bg-near-black-green' : 'bg-aloe-white'}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -693,11 +729,15 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
               </div>
             </div>
             
-            <form className={`p-8 rounded-2xl shadow-lg ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/50'}`}>
+            <form onSubmit={handleSubmit} className={`p-8 rounded-2xl shadow-lg ${darkMode ? 'bg-steel-blue-gray' : 'bg-white/50'}`}>
               <div className="mb-4">
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Name</label>
                 <input 
                   type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
                       ? 'bg-deep-forest-teal border border-fog-blue-gray/20 text-aloe-white focus:ring-fog-blue-gray' 
@@ -710,6 +750,10 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Email</label>
                 <input 
                   type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
                       ? 'bg-deep-forest-teal border border-fog-blue-gray/20 text-aloe-white focus:ring-fog-blue-gray' 
@@ -721,6 +765,10 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
               <div className="mb-6">
                 <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Message</label>
                 <textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   rows={4}
                   className={`w-full px-4 py-2 rounded-lg outline-none focus:ring-2 transition-all ${
                     darkMode 
@@ -731,7 +779,7 @@ const Contact = ({ darkMode }: { darkMode: boolean }) => {
                 ></textarea>
               </div>
               <button 
-                type="button"
+                type="submit"
                 className={`w-full py-3 rounded-lg font-medium transition-colors ${
                   darkMode 
                     ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 

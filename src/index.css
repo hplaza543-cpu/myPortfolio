@@ -34,11 +34,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-moss-green/60 rounded-full border-2 border-transparent bg-clip-content transition-colors duration-300;
+    @apply bg-cypress-green rounded-full border-2 border-transparent bg-clip-content transition-colors duration-300;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-moss-green/80;
+    @apply bg-moss-green;
   }
 
   .dark ::-webkit-scrollbar-track {
@@ -53,8 +53,12 @@
     @apply bg-aloe-white/50;
   }
   
+  *, ::before, ::after {
+    @apply transition-colors duration-500;
+  }
+
   body {
-    @apply bg-aloe-white text-moss-green transition-colors duration-500;
+    @apply bg-aloe-white text-moss-green;
   }
 
   .dark body {
