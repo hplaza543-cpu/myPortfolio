@@ -621,22 +621,22 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
   const certifications = [
     {
       title: 'Advanced Programming and Web Technology',
-      issuer: 'Technical Seminar',
-      date: '2024',
+      issuer: 'Webinar',
+      date: '2025',
       // TODO: Place your certificate image in the 'public' folder and name it 'advanced-programming.jpg'
       image: '/advanced-programming.jpg' 
     },
     {
       title: 'AI Unplugged Decoding the Future Intelligence',
-      issuer: 'Technical Seminar',
-      date: '2024',
+      issuer: 'Webinar',
+      date: '2025',
       // TODO: Place your certificate image in the 'public' folder and name it 'ai-unplugged.jpg'
       image: '/ai-unplugged.jpg'
     },
     {
       title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
-      issuer: 'Technical Seminar',
-      date: '2024',
+      issuer: 'Webinar',
+      date: '2025',
       // TODO: Place your certificate image in the 'public' folder and name it 'next-gen-learning.jpg'
       image: '/next-gen-learning.jpg'
     }
