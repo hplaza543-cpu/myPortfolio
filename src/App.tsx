@@ -622,20 +622,23 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
     {
       title: 'Advanced Programming and Web Technology',
       issuer: 'Technical Seminar',
-      date: '2025',
-      image: 'CERTIFICATE 1' // Replace with your image path, e.g., '/certificates/advanced-programming.jpg'
+      date: '2024',
+      // TODO: Place your certificate image in the 'public' folder and name it 'advanced-programming.jpg'
+      image: '/advanced-programming.jpg' 
     },
     {
       title: 'AI Unplugged Decoding the Future Intelligence',
       issuer: 'Technical Seminar',
-      date: '2025',
-      image: 'CERTIFICATE 2' // Replace with your image path
+      date: '2024',
+      // TODO: Place your certificate image in the 'public' folder and name it 'ai-unplugged.jpg'
+      image: '/ai-unplugged.jpg'
     },
     {
       title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
       issuer: 'Technical Seminar',
-      date: '2025',
-      image: 'CERTIFICATE 3' // Replace with your image path
+      date: '2024',
+      // TODO: Place your certificate image in the 'public' folder and name it 'next-gen-learning.jpg'
+      image: '/next-gen-learning.jpg'
     }
   ];
 
