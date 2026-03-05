@@ -245,8 +245,8 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
               {/* Pulse Ring Animation */}
               <motion.div
                 className={`absolute inset-0 rounded-full ${darkMode ? 'bg-aloe-white/20' : 'bg-moss-green/20'}`}
-                animate={{ scale: [1, 1.12, 1, 1.12, 1], opacity: [0.2, 0.5, 0.2, 0.5, 0.2] }}
-                transition={{ duration: 2, repeat: Infinity, times: [0, 0.15, 0.3, 0.45, 1], ease: "easeInOut" }}
+                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               />
               
               {/* Profile Image */}
