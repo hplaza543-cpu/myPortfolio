@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Moon, Sun, Github, Linkedin, Mail, Facebook, Instagram, Youtube, ExternalLink, Download, ChevronUp, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { jsPDF } from "jspdf";
 
 // --- Animation Variants ---
 
@@ -126,6 +127,111 @@ const Navbar = ({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMod
 };
 
 const Hero = ({ darkMode }: { darkMode: boolean }) => {
+  const handleDownloadResume = () => {
+    const doc = new jsPDF();
+    
+    // Set font styles
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("John Harold Z. Plaza", 20, 20);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("417D Brgy. San Jose Sitio IV, Mandaluyong City. | 09202245586 • hplaza543@gmail.com", 20, 28);
+    
+    doc.setLineWidth(0.5);
+    doc.line(20, 32, 190, 32);
+    
+    // Objective
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("OBJECTIVE", 20, 40);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    const objective = "A dedicated Computer Engineering student looking for an internship where I can enhance my technical knowledge, gain real-world experience in programming and technical support, and continuously learn new technologies.";
+    const splitObjective = doc.splitTextToSize(objective, 170);
+    doc.text(splitObjective, 20, 48);
+    
+    // Education
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("EDUCATION", 20, 65);
+    
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text("Rizal Technological University | Mandaluyong", 20, 73);
+    doc.setFont("helvetica", "italic");
+    doc.text("Bachelor of Science in Computer Engineering | Expected: 2026", 20, 78);
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("Relevant Coursework:", 20, 86);
+    doc.setFont("helvetica", "normal");
+    doc.text("• Advanced Programming", 25, 92);
+    doc.text("• Computer Organization & Architecture", 25, 97);
+    doc.text("• Computer Network & Security", 25, 102);
+    doc.text("• Operating Systems", 25, 107);
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("San Felipe Neri Parochial | Mandaluyong", 20, 115);
+    doc.setFont("helvetica", "italic");
+    doc.text("STEM | 2022", 20, 120);
+    
+    doc.line(20, 125, 190, 125);
+
+    // Skills
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("SKILLS", 20, 133);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("• Programming Foundations: Python, C++, Java, HTML, CSS (basic)", 25, 141);
+    doc.text("• Version Control & Deployment: GitHub, Vercel (basic)", 25, 146);
+    doc.text("• Desktop and laptop troubleshooting", 25, 151);
+    doc.text("• Adobe Photoshop and After Effects", 25, 156);
+    doc.text("• Basic MS Office", 25, 161);
+    
+    doc.line(20, 166, 190, 166);
+
+    // Projects
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("PROJECTS", 20, 174);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    
+    const projects = [
+      "• Laboratory Exercises (C++): Completed foundational programming tasks focusing on basic logic and syntax as part of academic coursework.",
+      "• Applied basic HTML and CSS concepts in guided coursework exercises",
+      "• Managed the end-to-end deployment of a web project using Vercel and GitHub.",
+      "• Photo and video editing projects using Adobe Photoshop and After Effects"
+    ];
+    
+    let yPos = 182;
+    projects.forEach(project => {
+      const splitProject = doc.splitTextToSize(project, 165);
+      doc.text(splitProject, 25, yPos);
+      yPos += (splitProject.length * 5) + 2;
+    });
+
+    // Technical Seminars
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("TECHNICAL SEMINARS AND WEBINARS ATTENDED", 20, yPos + 5);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    yPos += 13;
+    doc.text("• Advanced Programming and Web Technology", 25, yPos);
+    doc.text("• Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape", 25, yPos + 5);
+    doc.text("• Exploring The Latest Technology", 25, yPos + 10);
+    doc.text("• IoT and Embedded Systems with Applications in Machine Learning", 25, yPos + 15);
+    
+    doc.save("John_Harold_Plaza_Resume.pdf");
+  };
+
   return (
     <section id="home" className={`min-h-screen flex items-center justify-center pt-16 ${darkMode ? 'bg-near-black-green' : 'bg-aloe-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -134,6 +240,16 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
+          <div className="flex justify-center mb-8">
+            <div className={`relative w-40 h-40 rounded-full overflow-hidden border-4 shadow-xl ${darkMode ? 'border-steel-blue-gray shadow-black/30' : 'border-moss-green/20 shadow-moss-green/20'}`}>
+              <img 
+                src="/profile.jpg" 
+                alt="John Harold Z. Plaza" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
           <h1 className={`text-5xl md:text-7xl font-bold mb-6 font-serif ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>
             John Harold Z. Plaza
           </h1>
@@ -160,7 +276,9 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
             }`}>
               View Projects
             </a>
-            <button className={`px-8 py-3 rounded-full font-medium border-2 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2 ${
+            <button 
+              onClick={handleDownloadResume}
+              className={`px-8 py-3 rounded-full font-medium border-2 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2 ${
               darkMode 
                 ? 'border-steel-blue-gray text-fog-blue-gray hover:bg-steel-blue-gray hover:text-aloe-white' 
                 : 'border-moss-green text-moss-green hover:bg-moss-green hover:text-aloe-white'
@@ -316,24 +434,29 @@ const Skills = ({ darkMode }: { darkMode: boolean }) => {
 const Projects = ({ darkMode }: { darkMode: boolean }) => {
   const projects = [
     {
+      title: 'nastySFX',
+      description: 'A business website project where I sell my Adobe After Effects presets and projects.',
+      tech: ['React', 'E-commerce', 'Web Design'],
+      link: 'https://nasty-sfx.vercel.app/',
+      image: 'https://picsum.photos/seed/nastysfx/600/400'
+    },
+    {
       title: 'Student Portfolio Website',
       description: 'A responsive personal portfolio website designed with a nature-inspired theme.',
       tech: ['React', 'Tailwind CSS', 'Framer Motion'],
+      image: 'https://picsum.photos/seed/portfolio/600/400'
     },
     {
       title: 'Simple Calculator App',
       description: 'A functional calculator application with basic arithmetic operations and a clean UI.',
       tech: ['JavaScript', 'HTML', 'CSS'],
+      image: 'https://picsum.photos/seed/calculator/600/400'
     },
     {
       title: 'Attendance Tracker',
       description: 'A web-based system to track student attendance and generate reports.',
       tech: ['Python', 'Django', 'SQLite'],
-    },
-    {
-      title: 'Landing Page Design',
-      description: 'A high-conversion landing page for a fictional product with modern aesthetics.',
-      tech: ['HTML', 'SASS', 'JavaScript'],
+      image: 'https://picsum.photos/seed/attendance/600/400'
     },
   ];
 
@@ -366,8 +489,13 @@ const Projects = ({ darkMode }: { darkMode: boolean }) => {
                   darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'
                 }`}
               >
-                <div className={`h-48 w-full ${darkMode ? 'bg-near-black-green' : 'bg-moss-green/5'} flex items-center justify-center`}>
-                  <span className={`text-lg font-medium ${darkMode ? 'text-fog-blue-gray' : 'text-olive-green'}`}>Project Preview Image</span>
+                <div className={`h-48 w-full overflow-hidden ${darkMode ? 'bg-near-black-green' : 'bg-moss-green/5'}`}>
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <div className="p-6">
                   <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>{project.title}</h3>
@@ -382,13 +510,27 @@ const Projects = ({ darkMode }: { darkMode: boolean }) => {
                     ))}
                   </div>
                   <div className="flex gap-4">
-                    <button className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
-                      darkMode 
-                        ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
-                        : 'bg-moss-green text-aloe-white hover:bg-moss-green/90'
-                    }`}>
-                      Live Demo
-                    </button>
+                    {project.link ? (
+                      <a 
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex-1 py-2 rounded-lg font-medium transition-colors text-center ${
+                        darkMode 
+                          ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
+                          : 'bg-moss-green text-aloe-white hover:bg-moss-green/90'
+                      }`}>
+                        Live Demo
+                      </a>
+                    ) : (
+                      <button className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
+                        darkMode 
+                          ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
+                          : 'bg-moss-green text-aloe-white hover:bg-moss-green/90'
+                      }`}>
+                        Live Demo
+                      </button>
+                    )}
                     <button className={`flex-1 py-2 rounded-lg font-medium border transition-colors ${
                       darkMode 
                         ? 'border-fog-blue-gray text-fog-blue-gray hover:bg-fog-blue-gray/10' 
