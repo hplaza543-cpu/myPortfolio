@@ -31,6 +31,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMod
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
     { name: 'Education', href: '#education' },
+    { name: 'Certifications', href: '#certifications' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -615,8 +616,31 @@ const Education = ({ darkMode }: { darkMode: boolean }) => {
 };
 
 const Certifications = ({ darkMode }: { darkMode: boolean }) => {
+  const [selectedCert, setSelectedCert] = useState<string | null>(null);
+
+  const certifications = [
+    {
+      title: 'Advanced Programming and Web Technology',
+      issuer: 'Technical Seminar',
+      date: '2024',
+      image: 'https://picsum.photos/seed/cert1/600/400' // Replace with your image path, e.g., '/certificates/advanced-programming.jpg'
+    },
+    {
+      title: 'AI Unplugged Decoding the Future Intelligence',
+      issuer: 'Technical Seminar',
+      date: '2024',
+      image: 'https://picsum.photos/seed/cert2/600/400' // Replace with your image path
+    },
+    {
+      title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
+      issuer: 'Technical Seminar',
+      date: '2024',
+      image: 'https://picsum.photos/seed/cert3/600/400' // Replace with your image path
+    }
+  ];
+
   return (
-    <section className={`py-20 ${darkMode ? 'bg-deep-forest-teal' : 'bg-aloe-white'}`}>
+    <section id="certifications" className={`py-20 ${darkMode ? 'bg-deep-forest-teal' : 'bg-aloe-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -633,28 +657,79 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-6"
+            className="grid md:grid-cols-3 gap-8"
           >
-            {[1, 2, 3].map((item) => (
+            {certifications.map((cert, index) => (
               <motion.div 
-                key={item} 
+                key={index} 
                 variants={fadeInUp}
                 whileHover={{ y: -5 }}
-                className={`p-6 rounded-2xl shadow-md text-center transition-all duration-300 ${darkMode ? 'bg-steel-blue-gray hover:bg-steel-blue-gray/80' : 'bg-white/60 hover:bg-white/80'}`}
+                className={`rounded-2xl overflow-hidden shadow-md transition-all duration-300 cursor-pointer ${darkMode ? 'bg-steel-blue-gray hover:bg-steel-blue-gray/80' : 'bg-white/60 hover:bg-white/80'}`}
+                onClick={() => setSelectedCert(cert.image)}
               >
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 ${darkMode ? 'bg-fog-blue-gray/20 text-fog-blue-gray' : 'bg-moss-green/10 text-moss-green'}`}>
-                  <ExternalLink size={24} />
+                <div className={`h-48 w-full overflow-hidden relative group ${darkMode ? 'bg-near-black-green' : 'bg-moss-green/5'}`}>
+                  <img 
+                    src={cert.image} 
+                    alt={cert.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <ExternalLink className="text-white" size={32} />
+                  </div>
                 </div>
-                <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>Certification Name</h3>
-                <p className={`text-sm mb-6 ${darkMode ? 'text-aloe-white/60' : 'text-moss-green/60'}`}>Issuing Organization • Date</p>
-                <button className={`text-sm font-medium hover:underline ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}>
-                  View Certificate
-                </button>
+                <div className="p-6">
+                  <h3 className={`text-lg font-bold mb-2 line-clamp-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>{cert.title}</h3>
+                  <p className={`text-sm mb-4 ${darkMode ? 'text-aloe-white/60' : 'text-moss-green/60'}`}>{cert.issuer} • {cert.date}</p>
+                  <button 
+                    className={`text-sm font-medium hover:underline flex items-center gap-1 ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCert(cert.image);
+                    }}
+                  >
+                    View Certificate <ExternalLink size={14} />
+                  </button>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Modal for viewing certificate */}
+      <AnimatePresence>
+        {selectedCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedCert(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-4xl max-h-[90vh] w-full bg-transparent rounded-lg overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedCert(null)}
+                className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
+              >
+                <X size={24} />
+              </button>
+              <img
+                src={selectedCert}
+                alt="Certificate Full View"
+                className="w-full h-full object-contain max-h-[90vh] rounded-lg"
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
