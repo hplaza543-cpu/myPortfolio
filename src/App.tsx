@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Github, Linkedin, Mail, Facebook, Instagram, Youtube, ExternalLink, Download, ChevronUp, Phone } from 'lucide-react';
+import { Menu, X, Moon, Sun, ExternalLink, Download, ChevronUp, Phone, Mail, Linkedin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from "jspdf";
+import { NAV_LINKS, SOCIAL_LINKS, TECHNICAL_SKILLS, SOFT_SKILLS, PROJECTS, CERTIFICATIONS, RESUME_DATA } from './constants';
 
 // --- Animation Variants ---
 
@@ -25,16 +26,6 @@ const staggerContainer = {
 const Navbar = ({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMode: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Education', href: '#education' },
-    { name: 'Certifications', href: '#certifications' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
   return (
     <nav className={`sticky top-0 z-50 transition-colors duration-500 ${darkMode ? 'bg-dark-charcoal-green/95 border-b border-steel-blue-gray' : 'bg-aloe-white/95 border-b border-moss-green/10'} backdrop-blur-sm`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +39,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMod
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
@@ -105,7 +96,7 @@ const Navbar = ({ darkMode, toggleDarkMode }: { darkMode: boolean; toggleDarkMod
             className={`md:hidden ${darkMode ? 'bg-dark-charcoal-green border-b border-steel-blue-gray' : 'bg-aloe-white border-b border-moss-green/10'}`}
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
@@ -134,11 +125,11 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
     // Set font styles
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
-    doc.text("John Harold Z. Plaza", 20, 20);
+    doc.text(RESUME_DATA.name, 20, 20);
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("417D Brgy. San Jose Sitio IV, Mandaluyong City. | 09202245586 • hplaza543@gmail.com", 20, 28);
+    doc.text(RESUME_DATA.contact, 20, 28);
     
     doc.setLineWidth(0.5);
     doc.line(20, 32, 190, 32);
@@ -150,8 +141,7 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    const objective = "A dedicated Computer Engineering student looking for an internship where I can enhance my technical knowledge, gain real-world experience in programming and technical support, and continuously learn new technologies.";
-    const splitObjective = doc.splitTextToSize(objective, 170);
+    const splitObjective = doc.splitTextToSize(RESUME_DATA.objective, 170);
     doc.text(splitObjective, 20, 48);
     
     // Education
@@ -159,76 +149,79 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
     doc.setFontSize(12);
     doc.text("EDUCATION", 20, 65);
     
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("Rizal Technological University | Mandaluyong", 20, 73);
-    doc.setFont("helvetica", "italic");
-    doc.text("Bachelor of Science in Computer Engineering | Expected: 2026", 20, 78);
+    let yPos = 73;
+    RESUME_DATA.education.forEach((edu) => {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text(edu.school, 20, yPos);
+      yPos += 5;
+      doc.setFont("helvetica", "italic");
+      doc.text(edu.degree, 20, yPos);
+      yPos += 8;
+      
+      if (edu.coursework) {
+        doc.setFont("helvetica", "bold");
+        doc.text("Relevant Coursework:", 20, yPos);
+        yPos += 6;
+        doc.setFont("helvetica", "normal");
+        edu.coursework.forEach(course => {
+          doc.text(`• ${course}`, 25, yPos);
+          yPos += 5;
+        });
+        yPos += 3;
+      } else {
+        yPos += 5;
+      }
+    });
     
-    doc.setFont("helvetica", "bold");
-    doc.text("Relevant Coursework:", 20, 86);
-    doc.setFont("helvetica", "normal");
-    doc.text("• Advanced Programming", 25, 92);
-    doc.text("• Computer Organization & Architecture", 25, 97);
-    doc.text("• Computer Network & Security", 25, 102);
-    doc.text("• Operating Systems", 25, 107);
-    
-    doc.setFont("helvetica", "bold");
-    doc.text("San Felipe Neri Parochial | Mandaluyong", 20, 115);
-    doc.setFont("helvetica", "italic");
-    doc.text("STEM | 2022", 20, 120);
-    
-    doc.line(20, 125, 190, 125);
+    doc.line(20, yPos, 190, yPos);
+    yPos += 8;
 
     // Skills
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("SKILLS", 20, 133);
+    doc.text("SKILLS", 20, yPos);
+    yPos += 8;
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("• Programming Foundations: Python, C++, Java, HTML, CSS (basic)", 25, 141);
-    doc.text("• Version Control & Deployment: GitHub, Vercel (basic)", 25, 146);
-    doc.text("• Desktop and laptop troubleshooting", 25, 151);
-    doc.text("• Adobe Photoshop and After Effects", 25, 156);
-    doc.text("• Basic MS Office", 25, 161);
+    RESUME_DATA.skills.forEach(skill => {
+      doc.text(`• ${skill}`, 25, yPos);
+      yPos += 5;
+    });
     
-    doc.line(20, 166, 190, 166);
+    yPos += 5;
+    doc.line(20, yPos, 190, yPos);
+    yPos += 8;
 
     // Projects
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("PROJECTS", 20, 174);
+    doc.text("PROJECTS", 20, yPos);
+    yPos += 8;
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     
-    const projects = [
-      "• Laboratory Exercises (C++): Completed foundational programming tasks focusing on basic logic and syntax as part of academic coursework.",
-      "• Applied basic HTML and CSS concepts in guided coursework exercises",
-      "• Managed the end-to-end deployment of a web project using Vercel and GitHub.",
-      "• Photo and video editing projects using Adobe Photoshop and After Effects"
-    ];
-    
-    let yPos = 182;
-    projects.forEach(project => {
-      const splitProject = doc.splitTextToSize(project, 165);
+    RESUME_DATA.projects.forEach(project => {
+      const splitProject = doc.splitTextToSize(`• ${project}`, 165);
       doc.text(splitProject, 25, yPos);
       yPos += (splitProject.length * 5) + 2;
     });
 
     // Technical Seminars
+    yPos += 5;
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("TECHNICAL SEMINARS AND WEBINARS ATTENDED", 20, yPos + 5);
+    doc.text("TECHNICAL SEMINARS AND WEBINARS ATTENDED", 20, yPos);
+    yPos += 8;
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    yPos += 13;
-    doc.text("• Advanced Programming and Web Technology", 25, yPos);
-    doc.text("• Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape", 25, yPos + 5);
-    doc.text("• Exploring The Latest Technology", 25, yPos + 10);
-    doc.text("• IoT and Embedded Systems with Applications in Machine Learning", 25, yPos + 15);
+    RESUME_DATA.seminars.forEach(seminar => {
+      doc.text(`• ${seminar}`, 25, yPos);
+      yPos += 5;
+    });
     
     doc.save("John_Harold_Plaza_Resume.pdf");
   };
@@ -277,9 +270,14 @@ const Hero = ({ darkMode }: { darkMode: boolean }) => {
               <div className={`w-full border-t ${darkMode ? 'border-steel-blue-gray' : 'border-moss-green/10'}`}></div>
             </div>
             <div className="relative flex justify-center">
-              <span className={`px-6 italic font-serif text-lg md:text-xl ${darkMode ? 'bg-near-black-green text-fog-blue-gray' : 'bg-aloe-white text-cypress-green'}`}>
-                "Whatever you do in this life, it’s not legendary, unless your friends are there to see it."
-              </span>
+              <div className={`px-6 flex flex-col items-center ${darkMode ? 'bg-near-black-green' : 'bg-aloe-white'}`}>
+                <span className={`italic font-serif text-lg md:text-xl text-center ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}>
+                  "Whatever you do in this life, it’s not legendary, unless your friends are there to see it."
+                </span>
+                <span className={`italic font-serif text-xl md:text-2xl font-bold mt-2 ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}>
+                  True Story.
+                </span>
+              </div>
             </div>
           </div>
 
@@ -341,13 +339,7 @@ const About = ({ darkMode }: { darkMode: boolean }) => {
             </p>
             
             <div className="flex justify-center space-x-6">
-              {[
-                { icon: Facebook, href: 'https://www.facebook.com/DaDoodsDurogs' },
-                { icon: Instagram, href: 'https://www.instagram.com/imharoldzafra/' },
-                { icon: Youtube, href: 'https://www.youtube.com/@DaDoodsDurogs' },
-                { icon: Linkedin, href: 'https://www.linkedin.com/in/plaza-john-harold-z-548b453a7/' },
-                { icon: Github, href: 'https://github.com/hplaza543-cpu' }
-              ].map((social, index) => (
+              {SOCIAL_LINKS.map((social, index) => (
                 <a
                   key={index}
                   href={social.href}
@@ -371,9 +363,6 @@ const About = ({ darkMode }: { darkMode: boolean }) => {
 };
 
 const Skills = ({ darkMode }: { darkMode: boolean }) => {
-  const technicalSkills = ['HTML', 'CSS', 'JavaScript', 'Python', 'Git & GitHub', 'React', 'Node.js', 'SQL'];
-  const softSkills = ['Problem Solving', 'Communication', 'Team Collaboration', 'Time Management', 'Adaptability', 'Leadership'];
-
   return (
     <section id="skills" className={`py-20 ${darkMode ? 'bg-near-black-green' : 'bg-aloe-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -397,7 +386,7 @@ const Skills = ({ darkMode }: { darkMode: boolean }) => {
                 viewport={{ once: true }}
                 className="grid grid-cols-2 gap-4"
               >
-                {technicalSkills.map((skill, index) => (
+                {TECHNICAL_SKILLS.map((skill, index) => (
                   <motion.div
                     key={skill}
                     variants={fadeInUp}
@@ -423,7 +412,7 @@ const Skills = ({ darkMode }: { darkMode: boolean }) => {
                 viewport={{ once: true }}
                 className="grid grid-cols-2 gap-4"
               >
-                {softSkills.map((skill, index) => (
+                {SOFT_SKILLS.map((skill, index) => (
                   <motion.div
                     key={skill}
                     variants={fadeInUp}
@@ -447,34 +436,6 @@ const Skills = ({ darkMode }: { darkMode: boolean }) => {
 };
 
 const Projects = ({ darkMode }: { darkMode: boolean }) => {
-  const projects = [
-    {
-      title: 'nastySFX',
-      description: 'A business website project where I sell my Adobe After Effects presets and projects.',
-      tech: ['React', 'E-commerce', 'Web Design'],
-      link: 'https://nasty-sfx.vercel.app/',
-      image: 'https://picsum.photos/seed/nastysfx/600/400'
-    },
-    {
-      title: 'Student Portfolio Website',
-      description: 'A responsive personal portfolio website designed with a nature-inspired theme.',
-      tech: ['React', 'Tailwind CSS', 'Framer Motion'],
-      image: 'https://picsum.photos/seed/portfolio/600/400'
-    },
-    {
-      title: 'Simple Calculator App',
-      description: 'A functional calculator application with basic arithmetic operations and a clean UI.',
-      tech: ['JavaScript', 'HTML', 'CSS'],
-      image: 'https://picsum.photos/seed/calculator/600/400'
-    },
-    {
-      title: 'Attendance Tracker',
-      description: 'A web-based system to track student attendance and generate reports.',
-      tech: ['Python', 'Django', 'SQLite'],
-      image: 'https://picsum.photos/seed/attendance/600/400'
-    },
-  ];
-
   return (
     <section id="projects" className={`py-20 ${darkMode ? 'bg-deep-forest-teal' : 'bg-aloe-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -495,16 +456,16 @@ const Projects = ({ darkMode }: { darkMode: boolean }) => {
             viewport={{ once: true }}
             className="grid md:grid-cols-2 gap-8"
           >
-            {projects.map((project, index) => (
+            {PROJECTS.map((project, index) => (
               <motion.div
                 key={index}
                 variants={fadeInUp}
                 whileHover={{ y: -5 }}
-                className={`rounded-2xl overflow-hidden shadow-lg transition-colors ${
+                className={`rounded-2xl overflow-hidden shadow-lg transition-colors flex flex-col h-full ${
                   darkMode ? 'bg-steel-blue-gray' : 'bg-white/60'
                 }`}
               >
-                <div className={`h-48 w-full overflow-hidden ${darkMode ? 'bg-near-black-green' : 'bg-moss-green/5'}`}>
+                <div className={`h-48 w-full shrink-0 overflow-hidden ${darkMode ? 'bg-near-black-green' : 'bg-moss-green/5'}`}>
                   <img 
                     src={project.image} 
                     alt={project.title} 
@@ -512,25 +473,18 @@ const Projects = ({ darkMode }: { darkMode: boolean }) => {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>{project.title}</h3>
-                  <p className={`mb-4 ${darkMode ? 'text-aloe-white/70' : 'text-moss-green/70'}`}>{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map((t) => (
-                      <span key={t} className={`text-xs px-2 py-1 rounded-full ${
-                        darkMode ? 'bg-deep-forest-teal text-fog-blue-gray' : 'bg-cedar-beige/20 text-cypress-green'
-                      }`}>
-                        {t}
-                      </span>
-                    ))}
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex-grow">
+                    <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>{project.title}</h3>
+                    <p className={`mb-6 ${darkMode ? 'text-aloe-white/70' : 'text-moss-green/70'}`}>{project.description}</p>
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 mt-auto">
                     {project.link ? (
                       <a 
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex-1 py-2 rounded-lg font-medium transition-colors text-center ${
+                        className={`flex-1 py-2 rounded-lg font-medium transition-colors text-center flex items-center justify-center ${
                         darkMode 
                           ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
                           : 'bg-moss-green text-aloe-white hover:bg-moss-green/90'
@@ -538,7 +492,7 @@ const Projects = ({ darkMode }: { darkMode: boolean }) => {
                         Live Demo
                       </a>
                     ) : (
-                      <button className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
+                      <button className={`flex-1 py-2 rounded-lg font-medium transition-colors flex items-center justify-center ${
                         darkMode 
                           ? 'bg-fog-blue-gray text-aloe-white hover:bg-fog-blue-gray/80' 
                           : 'bg-moss-green text-aloe-white hover:bg-moss-green/90'
@@ -618,30 +572,6 @@ const Education = ({ darkMode }: { darkMode: boolean }) => {
 const Certifications = ({ darkMode }: { darkMode: boolean }) => {
   const [selectedCert, setSelectedCert] = useState<string | null>(null);
 
-  const certifications = [
-    {
-      title: 'Advanced Programming and Web Technology',
-      issuer: 'Webinar',
-      date: '2025',
-      // TODO: Place your certificate image in the 'public' folder and name it 'advanced-programming.jpg'
-      image: '/advanced-programming.jpg' 
-    },
-    {
-      title: 'AI Unplugged Decoding the Future Intelligence',
-      issuer: 'Webinar',
-      date: '2025',
-      // TODO: Place your certificate image in the 'public' folder and name it 'ai-unplugged.jpg'
-      image: '/ai-unplugged.jpg'
-    },
-    {
-      title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
-      issuer: 'Webinar',
-      date: '2025',
-      // TODO: Place your certificate image in the 'public' folder and name it 'next-gen-learning.jpg'
-      image: '/next-gen-learning.jpg'
-    }
-  ];
-
   return (
     <section id="certifications" className={`py-20 ${darkMode ? 'bg-deep-forest-teal' : 'bg-aloe-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -662,7 +592,7 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
             viewport={{ once: true }}
             className="grid md:grid-cols-3 gap-8"
           >
-            {certifications.map((cert, index) => (
+            {CERTIFICATIONS.map((cert, index) => (
               <motion.div 
                 key={index} 
                 variants={fadeInUp}
@@ -685,7 +615,7 @@ const Certifications = ({ darkMode }: { darkMode: boolean }) => {
                   <h3 className={`text-lg font-bold mb-2 line-clamp-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>{cert.title}</h3>
                   <p className={`text-sm mb-4 ${darkMode ? 'text-aloe-white/60' : 'text-moss-green/60'}`}>{cert.issuer} • {cert.date}</p>
                   <button 
-                    className={`text-sm font-medium hover:underline flex items-center gap-1 ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}
+                    className={`text-sm font-medium hover:underline flex items-center gap-1 cursor-pointer ${darkMode ? 'text-fog-blue-gray' : 'text-cypress-green'}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedCert(cert.image);
@@ -853,17 +783,13 @@ const Footer = ({ darkMode }: { darkMode: boolean }) => {
             <h3 className={`text-xl font-bold font-serif mb-2 ${darkMode ? 'text-aloe-white' : 'text-moss-green'}`}>imharoldzafra</h3>
             <p className={`italic text-sm ${darkMode ? 'text-fog-blue-gray' : 'text-olive-green'}`}>
               "Whatever you do in this life, it’s not legendary, unless your friends are there to see it."
+              <br />
+              <span className="text-base font-bold block mt-1">True Story.</span>
             </p>
           </div>
           
           <div className="flex gap-6">
-            {[
-              { icon: Facebook, href: 'https://www.facebook.com/DaDoodsDurogs' },
-              { icon: Instagram, href: 'https://www.instagram.com/imharoldzafra/' },
-              { icon: Youtube, href: 'https://www.youtube.com/@DaDoodsDurogs' },
-              { icon: Linkedin, href: 'https://www.linkedin.com/in/plaza-john-harold-z-548b453a7/' },
-              { icon: Github, href: 'https://github.com/hplaza543-cpu' }
-            ].map((social, index) => (
+            {SOCIAL_LINKS.map((social, index) => (
               <a 
                 key={index} 
                 href={social.href}
