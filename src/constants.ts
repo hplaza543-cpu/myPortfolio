@@ -50,19 +50,19 @@ export const CERTIFICATIONS = [
     title: 'Advanced Programming and Web Technology',
     issuer: 'Webinar',
     date: '2025',
-    image: 'https://picsum.photos/seed/cert1/800/600' 
+    image: '/advanced-programming.jpg' 
   },
   {
     title: 'AI Unplugged Decoding the Future Intelligence',
     issuer: 'Webinar',
     date: '2025',
-    image: 'https://picsum.photos/seed/cert2/800/600'
+    image: '/ai-unplugged.jpg'
   },
   {
     title: 'Next-Gen Learning Trends in IT, AI, and the Evolving Industry Landscape',
     issuer: 'Webinar',
     date: '2025',
-    image: 'https://picsum.photos/seed/cert3/800/600'
+    image: '/next-gen-learning.jpg'
   }
 ];
 
